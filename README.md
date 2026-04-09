@@ -1,4 +1,3 @@
-<![CDATA[<div align="center">
 
 # 🧠 MoE Gating Network — USD/JPY Morphological Forecaster
 
