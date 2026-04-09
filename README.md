@@ -81,7 +81,7 @@ O módulo `backfill_ticks_to_bars()` extrai ticks brutos do MetaTrader 5 e os co
 
 **Auto-detecção de threshold:** Quando não especificado, o sistema realiza uma primeira passagem amostral de 7 dias para estimar o threshold ótimo que gera ~50 barras/dia:
 
-$$\text{threshold} = \frac{\text{metric}_{\text{total\_estimado}}}{50 \times \text{days\_back}}$$
+$$\text{threshold} = \frac{\text{metric}_{\text{total\ estimado}}}{50 \times \text{days\ back}}$$
 
 **Persistência:** Os dados são salvos em HDF5 com compressão `blosc:zstd` (nível 6) e metadados de rastreabilidade (símbolo, tipo de barra, data de extração).
 
@@ -180,7 +180,7 @@ Labeling supervisionado via 3 barreiras simétricas baseadas em volatilidade loc
 |---|---|---|
 | Upper (Take-Profit) | $\text{High}_h \geq C_t \cdot (1 + \sigma_t \cdot k_{\text{up}})$ | $+1$ |
 | Lower (Stop-Loss) | $\text{Low}_h \leq C_t \cdot (1 - \sigma_t \cdot k_{\text{down}})$ | $-1$ |
-| Vertical (Timeout) | $h > t + \text{max\_holding}$ | $0$ |
+| Vertical (Timeout) | $h > t + \text{max\ holding}$ | $0$ |
 
 ---
 
@@ -404,11 +404,11 @@ O gap de 200 barras (purge) entre treino e validação elimina **autocorrelaçã
 
 | Métrica | Fórmula | Interpretação |
 |---|---|---|
-| MAE Close | $\frac{1}{H}\sum|C_{\text{pred}} - C_{\text{real}}|$ | Erro absoluto médio no Close |
+| MAE Close | $ \frac{1}{H}\sum|C_{\text{pred}} - C_{\text{real}}| $ | Erro absoluto médio no Close |
 | Acurácia Direcional | $\frac{1}{H}\sum \mathbb{1}[\text{sign}(\Delta\hat{C}) = \text{sign}(\Delta C)]$ | % de acertos na direção |
 | Cobertura Conformal | $\frac{1}{H}\sum \mathbb{1}[C_{\text{real}} \in [\hat{C} - q, \hat{C} + q]]$ | Deve ser ≥ 90% para CI 90% |
-| Flat-Line Rate | $\frac{\#\{\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
-| Mean Curvature | $\text{mean}(|\Delta^2\hat{C}|)$ | Riqueza morfológica da projeção |
+| Flat-Line Rate | $\frac{{\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
+| Mean Curvature | $\text{mean}(\lvert \Delta^2\hat{C} \rvert)$ | Riqueza morfológica da projeção |
 
 ---
 
