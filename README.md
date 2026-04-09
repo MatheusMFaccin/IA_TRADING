@@ -74,14 +74,14 @@ O módulo `backfill_ticks_to_bars()` extrai ticks brutos do MetaTrader 5 e os co
 | Tipo | Acumulação | Fórmula | Uso Primário |
 |---|---|---|---|
 | **Tick Bar** | $N$ ticks por barra | `count(ticks) ≥ N` | Baseline — proxy robusto para Forex OTC |
-| **Volume Bar** | $V$ unidades de volume | $\sum V_{\text{real},i} \geq V$ | Captura atividade em sobreposições de sessão |
-| **Dollar Bar** | $D$ unidades monetárias | $\sum (\text{bid}_i \times V_{\text{real},i}) \geq D$ | Normalização cross-asset |
+| **Volume Bar** | $V$ unidades de volume | $\sum V\_{\text{real},i} \geq V$ | Captura atividade em sobreposições de sessão |
+| **Dollar Bar** | $D$ unidades monetárias | $\sum ( \text{bid}\_{i} \cdot V\_{\text{real},i} ) \geq D$ | Normalização cross-asset |
 
 > **Nota sobre Forex OTC (USD/JPY):** O `volume_real` no MT5 para Forex corresponde ao *tick count* (não volume monetário). Esse proxy tem correlação $\rho > 0.90$ com o volume real em ECN e é a melhor medida de atividade disponível para o mercado de câmbio descentralizado.
 
 **Auto-detecção de threshold:** Quando não especificado, o sistema realiza uma primeira passagem amostral de 7 dias para estimar o threshold ótimo que gera ~50 barras/dia:
 
-$$\text{threshold} = \frac{\text{metric}_{\text{total\ estimado}}}{50 \times \text{days\ back}}$$
+$$\text{threshold} = \frac{\text{metric}\_{\text{total estimado}}}{50 \times \text{days\ back}}$$
 
 **Persistência:** Os dados são salvos em HDF5 com compressão `blosc:zstd` (nível 6) e metadados de rastreabilidade (símbolo, tipo de barra, data de extração).
 
@@ -146,19 +146,19 @@ O módulo gera **13 sinais de microestrutura** organizados em 7 categorias, com 
 
 | # | Categoria | Alpha | Fórmula / Referência |
 |---|---|---|---|
-| 1 | Direção | Log Returns | $r_t = \ln(C_t / C_{t-1})$ |
-| 2 | Direção | MA Crossover | $\text{sign}(\text{EMA}_9 - \text{EMA}_{21})$ |
-| 3 | Volatilidade | Garman-Klass | $\sigma^2_{\text{GK}} = 0.5 \ln(H/L)^2 - (2\ln 2 - 1) \ln(C/O)^2$ |
-| 4 | Volatilidade | Yang-Zhang | $\sigma^2_{\text{YZ}} = \sigma^2_{\text{OC}} + k \sigma^2_{\text{CC}} + (1-k) \sigma^2_{\text{RS}}$ |
-| 5 | Volatilidade | Parkinson | $\sigma^2_P = \ln(H/L)^2 / (4\ln 2)$ |
-| 6 | Liquidez | Amihud | $\text{ILLIQ}_t = |r_t| / V_t$ (rolling 20) |
-| 7 | Liquidez | Kyle's Lambda | $\lambda = \text{Cov}(\Delta P, V_{\text{signed}}) / \text{Var}(V_{\text{signed}})$ |
+| 1 | Direção | Log Returns | $r\_t = \ln(C\_t / C\_{t-1})$ |
+| 2 | Direção | MA Crossover | $\text{sign}(\text{EMA}\_{9} - \text{EMA}\_{21})$ |
+| 3 | Volatilidade | Garman-Klass | $\sigma^2\_{\text{GK}} = 0.5 \ln(H/L)^2 - (2\ln 2 - 1) \ln(C/O)^2$ |
+| 4 | Volatilidade | Yang-Zhang | $\sigma^2\_{\text{YZ}} = \sigma^2\_{\text{OC}} + k \sigma^2\_{\text{CC}} + (1-k) \sigma^2\_{\text{RS}}$ |
+| 5 | Volatilidade | Parkinson | $\sigma^2\_P = \ln(H/L)^2 / (4\ln 2)$ |
+| 6 | Liquidez | Amihud | $\text{ILLIQ}\_t = \vert r\_t \vert / V\_t$ (rolling 20) |
+| 7 | Liquidez | Kyle's Lambda | $\lambda = \text{Cov}(\Delta P, V\_{\text{signed}}) / \text{Var}(V\_{\text{signed}})$ |
 | 8 | Informação | CDF-VPIN | $\Phi\left(\frac{\text{VPIN} - \mu}{\sigma}\right) \in [0,1]$ |
 | 9 | Informação | Tick Run Length | Comprimento médio de runs direcionais |
 | 10 | Regime | **Hurst Exponent** | $H > 0.5$: trending · $H = 0.5$: random walk · $H < 0.5$: mean-reverting |
-| 11 | Microestrutura | Spread Bid-Ask | $\text{Spread}_{\text{norm}} / \text{Midprice}$ (rolling 20) |
+| 11 | Microestrutura | Spread Bid-Ask | $\text{Spread}\_{\text{norm}} / \text{Midprice}$ (rolling 20) |
 | 12 | Microestrutura | VWAP Deviation | $(\text{Close} - \text{VWAP}) / \text{VWAP}$ |
-| 13 | Microestrutura | Order Imbalance | $(V_{\text{buy}} - V_{\text{sell}}) / V_{\text{total}}$ |
+| 13 | Microestrutura | Order Imbalance | $(V\_{\text{buy}} - V\_{\text{sell}}) / V\_{\text{total}}$ |
 
 ### Fractional Differentiation (Hosking, 1981)
 
@@ -178,8 +178,8 @@ Labeling supervisionado via 3 barreiras simétricas baseadas em volatilidade loc
 
 | Barreira | Condição | Label |
 |---|---|---|
-| Upper (Take-Profit) | $\text{High}_h \geq C_t \cdot (1 + \sigma_t \cdot k_{\text{up}})$ | $+1$ |
-| Lower (Stop-Loss) | $\text{Low}_h \leq C_t \cdot (1 - \sigma_t \cdot k_{\text{down}})$ | $-1$ |
+| Upper (Take-Profit) | $\text{High}\_{h} \geq C\_{t} \cdot (1 + \sigma\_{t} \cdot k\_{up})$ | $+1$ |
+| Lower (Stop-Loss) | $\text{Low}\_{h} \leq C\_{t} \cdot (1 - \sigma\_{t} \cdot k\_{down})$ | $-1$ |
 | Vertical (Timeout) | $h > t + \text{max\ holding}$ | $0$ |
 
 ---
@@ -404,10 +404,10 @@ O gap de 200 barras (purge) entre treino e validação elimina **autocorrelaçã
 
 | Métrica | Fórmula | Interpretação |
 |---|---|---|
-| MAE Close | $ \frac{1}{H}\sum|C_{\text{pred}} - C_{\text{real}}| $ | Erro absoluto médio no Close |
+| MAE Close | $\frac{1}{H}\sum \vert C\_{\text{pred}} - C\_{\text{real}} \vert$ | Erro absoluto médio no Close |
 | Acurácia Direcional | $\frac{1}{H}\sum \mathbb{1}[\text{sign}(\Delta\hat{C}) = \text{sign}(\Delta C)]$ | % de acertos na direção |
-| Cobertura Conformal | $\frac{1}{H}\sum \mathbb{1}[C_{\text{real}} \in [\hat{C} - q, \hat{C} + q]]$ | Deve ser ≥ 90% para CI 90% |
-| Flat-Line Rate | $\frac{{\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
+| Cobertura Conformal | $\frac{1}{H}\sum \mathbb{1}[C\_{\text{real}} \in [\hat{C} - q, \hat{C} + q]]$ | Deve ser ≥ 90% para CI 90% |
+| Flat-Line Rate | $\frac{ {\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
 | Mean Curvature | $\text{mean}(\lvert \Delta^2\hat{C} \rvert)$ | Riqueza morfológica da projeção |
 
 ---
@@ -546,4 +546,4 @@ pip install -r requirements.txt
 *Projeções não constituem recomendação de investimento.*
 
 </div>
-]]>
+
