@@ -1,0 +1,105 @@
+{
+  "input_file": "D:\\projects\\Ia_Bolsa_de_valores\\utils\\data\\final\\dataset_final.h5",
+  "input_key": "features",
+  "window_size": 60,
+  "horizon": 15,
+  "n_outputs": 4,
+  "dropout": 0.2,
+  "ema_periods": 10,
+  "purge_bars": 200,
+  "n_splits": 5,
+  "epochs": 60,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "loss_alpha": 0.5,
+  "loss_beta": 0.2,
+  "loss_gamma": 1.0,
+  "huber_delta": 1.0,
+  "confidence_level": 0.9,
+  "model_save_path": "D:\\projects\\Ia_Bolsa_de_valores\\utils\\models\\GBPUSD\\moe_model.keras",
+  "results_save_path": "D:\\projects\\Ia_Bolsa_de_valores\\utils\\exports\\inference\\results_inference.parquet",
+  "config_save_path": "D:\\projects\\Ia_Bolsa_de_valores\\utils\\models\\GBPUSD\\moe_config.json",
+  "fold_metrics": [
+    {
+      "fold": 1,
+      "mae_moe": 0.0627809464931488,
+      "mae_inception": 0.1450606882572174,
+      "mae_lstm": 0.06322495639324188,
+      "mae_transformer": 0.014752909541130066,
+      "mae_mlp": 0.13131928443908691,
+      "gating_weights": [
+        0.08775465190410614,
+        0.562282145023346,
+        0.16864082217216492,
+        0.18132153153419495
+      ],
+      "epochs_trained": 21
+    },
+    {
+      "fold": 2,
+      "mae_moe": 0.027218032628297806,
+      "mae_inception": 0.13044998049736023,
+      "mae_lstm": 0.07644058763980865,
+      "mae_transformer": 0.0546252503991127,
+      "mae_mlp": 0.026099156588315964,
+      "gating_weights": [
+        0.005881070625036955,
+        0.025489946827292442,
+        0.01986115798354149,
+        0.9487688541412354
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 3,
+      "mae_moe": 0.026221327483654022,
+      "mae_inception": 0.12345381081104279,
+      "mae_lstm": 0.020771551877260208,
+      "mae_transformer": 0.025507234036922455,
+      "mae_mlp": 0.032521359622478485,
+      "gating_weights": [
+        0.00463248323649168,
+        0.02607816830277443,
+        0.8044871687889099,
+        0.16480354964733124
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 4,
+      "mae_moe": 0.02602001093327999,
+      "mae_inception": 0.22128692269325256,
+      "mae_lstm": 0.03838568180799484,
+      "mae_transformer": 0.025918245315551758,
+      "mae_mlp": 0.025769682601094246,
+      "gating_weights": [
+        0.0020390842109918594,
+        0.01468427199870348,
+        0.7905740141868591,
+        0.1927020251750946
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 5,
+      "mae_moe": 0.03193212300539017,
+      "mae_inception": 0.11501511931419373,
+      "mae_lstm": 0.04597368463873863,
+      "mae_transformer": 0.028510713949799538,
+      "mae_mlp": 0.029431505128741264,
+      "gating_weights": [
+        0.005773184355348349,
+        0.16093677282333374,
+        0.10674361884593964,
+        0.7265470623970032
+      ],
+      "epochs_trained": 43
+    }
+  ],
+  "gating_weights_final": [
+    0.004213686566799879,
+    0.15995004773139954,
+    0.06229808181524277,
+    0.7735381126403809
+  ]
+}

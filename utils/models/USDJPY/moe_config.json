@@ -1,0 +1,105 @@
+{
+  "input_file": "dataset_final.h5",
+  "input_key": "features",
+  "window_size": 60,
+  "horizon": 15,
+  "n_outputs": 4,
+  "dropout": 0.2,
+  "ema_periods": 10,
+  "purge_bars": 200,
+  "n_splits": 5,
+  "epochs": 60,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "loss_alpha": 0.5,
+  "loss_beta": 0.2,
+  "loss_gamma": 1.0,
+  "huber_delta": 1.0,
+  "confidence_level": 0.9,
+  "model_save_path": "moe_model.keras",
+  "results_save_path": "results_inference.parquet",
+  "config_save_path": "moe_config.json",
+  "fold_metrics": [
+    {
+      "fold": 1,
+      "mae_moe": 0.036395300179719925,
+      "mae_inception": 0.056584157049655914,
+      "mae_lstm": 0.04851408302783966,
+      "mae_transformer": 0.013412628322839737,
+      "mae_mlp": 0.16594891250133514,
+      "gating_weights": [
+        0.08633341640233994,
+        0.1911686509847641,
+        0.5896425843238831,
+        0.1328551024198532
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 2,
+      "mae_moe": 0.035040948539972305,
+      "mae_inception": 0.20536498725414276,
+      "mae_lstm": 0.15549595654010773,
+      "mae_transformer": 0.023117346689105034,
+      "mae_mlp": 0.05735452100634575,
+      "gating_weights": [
+        0.02322048880159855,
+        0.05845171585679054,
+        0.7933545708656311,
+        0.124973364174366
+      ],
+      "epochs_trained": 35
+    },
+    {
+      "fold": 3,
+      "mae_moe": 0.027056438848376274,
+      "mae_inception": 0.10991167277097702,
+      "mae_lstm": 0.10581910610198975,
+      "mae_transformer": 0.0256686769425869,
+      "mae_mlp": 0.03804356977343559,
+      "gating_weights": [
+        0.00822846032679081,
+        0.014423230662941933,
+        0.952900230884552,
+        0.024448301643133163
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 4,
+      "mae_moe": 0.04471297189593315,
+      "mae_inception": 0.17537996172904968,
+      "mae_lstm": 0.09987278282642365,
+      "mae_transformer": 0.03139247000217438,
+      "mae_mlp": 0.039699677377939224,
+      "gating_weights": [
+        0.0063216970302164555,
+        0.19596661627292633,
+        0.77298504114151,
+        0.024726083502173424
+      ],
+      "epochs_trained": 60
+    },
+    {
+      "fold": 5,
+      "mae_moe": 0.038819264620542526,
+      "mae_inception": 0.20797650516033173,
+      "mae_lstm": 0.09033581614494324,
+      "mae_transformer": 0.028265150263905525,
+      "mae_mlp": 0.32921046018600464,
+      "gating_weights": [
+        0.002653525210916996,
+        0.15730611979961395,
+        0.8361303806304932,
+        0.003910652827471495
+      ],
+      "epochs_trained": 60
+    }
+  ],
+  "gating_weights_final": [
+    0.0042845881544053555,
+    0.15333160758018494,
+    0.8396939635276794,
+    0.0026899161748588085
+  ]
+}

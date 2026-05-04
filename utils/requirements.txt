@@ -1,0 +1,44 @@
+# ============================================
+# Pipeline HFT - Conselho de Especialistas (MoE)
+# Dependências do Projeto
+# MoE Gating v2: moe_gating.py + moe_visualization.py
+# Novos módulos: InceptionTime, ResidualMLP, RegimeGatingNetwork,
+#                Soft-DTW Loss, Curvature Penalty
+# Sem novas dependências externas — usa TF/Keras + sklearn + matplotlib
+# ============================================
+
+# --- Core ---
+numpy>=2.2.0
+pandas>=2.2.0
+scipy>=1.17.0
+scikit-learn>=1.8.0
+
+# --- Deep Learning ---
+tensorflow>=2.20.0
+keras>=3.13.0
+xgboost>=3.2.0
+
+# --- Dados & I/O ---
+h5py>=3.15.0
+tables>=3.11.0
+MetaTrader5>=5.0.0
+pyarrow>=17.0.0
+
+# --- Signal Processing & Denoising ---
+PyWavelets>=1.9.0
+pykalman>=0.9.5
+
+# --- Stationarity Tests (FracDiff) ---
+statsmodels>=0.14.0
+
+# --- Alphas & Indicadores ---
+pandas-ta==0.4.71b0
+
+# --- Visualização ---
+matplotlib>=3.10.0
+seaborn>=0.13.0
+plotly>=6.5.0
+
+# --- Utilitários ---
+tqdm>=4.67.0
+joblib>=1.5.0
