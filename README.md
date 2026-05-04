@@ -81,7 +81,7 @@ O módulo `backfill_ticks_to_bars()` extrai ticks brutos do MetaTrader 5 e os co
 
 **Auto-detecção de threshold:** Quando não especificado, o sistema realiza uma primeira passagem amostral de 7 dias para estimar o threshold ótimo que gera ~50 barras/dia:
 
-$$\text{threshold} = \frac{\text{metric}\_{\text{total\_estimado}}}{50 \times \text{days\_back}}$$
+$$\text{threshold} = \frac{\text{metric}\_{\text{total estimado}}}{50 \times \text{days\ back}}$$
 
 **Persistência:** Os dados são salvos em HDF5 com compressão `blosc:zstd` (nível 6) e metadados de rastreabilidade (símbolo, tipo de barra, data de extração).
 
@@ -396,8 +396,6 @@ O gap de 200 barras (purge) entre treino e validação elimina **autocorrelaçã
 | Função | Painéis | Descrição |
 |---|---|---|
 | `plot_moe_analysis()` | 3 | Candlestick histórico + Projeção + Especialistas + Gating |
-| `plot_ghost_projection()` | 3 | **Ghost Projection** — Projeção futura (out-of-sample) com velas fantasma, CI Conformal, horizonte temporal estimado (~7.5h) e zona futura sombreada |
-| `plot_daily_projection()` | 3 | **Daily Projection** — Converte tick bars → candle diário com D0 híbrido (real + MoE), CI do Close daily, decomposição intraday |
 | `plot_comparison_vs_real()` | 4 | MoE vs Real + Erro por barra + CI Coverage + Gating por fold |
 | `run_rolling_backtest_30d()` | 2 | Rolling backtest de 30 dias com métricas diárias |
 | `run_daily_comparison()` | — | Orquestra agregação + comparação daily |
@@ -409,57 +407,28 @@ O gap de 200 barras (purge) entre treino e validação elimina **autocorrelaçã
 | MAE Close | $\frac{1}{H}\sum \vert C\_{\text{pred}} - C\_{\text{real}} \vert$ | Erro absoluto médio no Close |
 | Acurácia Direcional | $\frac{1}{H}\sum \mathbb{1}[\text{sign}(\Delta\hat{C}) = \text{sign}(\Delta C)]$ | % de acertos na direção |
 | Cobertura Conformal | $\frac{1}{H}\sum \mathbb{1}[C\_{\text{real}} \in [\hat{C} - q, \hat{C} + q]]$ | Deve ser ≥ 90% para CI 90% |
-| Flat-Line Rate | $\frac{\#\{\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
+| Flat-Line Rate | $\frac{ {\Delta\hat{C} \approx 0\}}{H}$ | Taxa de linhas planas (modo de falha) |
 | Mean Curvature | $\text{mean}(\lvert \Delta^2\hat{C} \rvert)$ | Riqueza morfológica da projeção |
 
 ---
 
 ## Pipeline de Execução
 
-### Orquestrador Automático
+### Treino Completo (End-to-End)
 
 ```bash
-# Pipeline completo (5 estágios com validação)
-python run_all.py
-
-# A partir do estágio 3 (alphas → treino → viz)
-python run_all.py --from 3
-
-# Apenas treino MoE
-python run_all.py --only 4
-
-# Verificar status dos artefatos
-python run_all.py --dry-run
-```
-
-### Execução Manual (Estágio a Estágio)
-
-```bash
-# 1. Extrair ticks do MT5 → dataset_raw.h5
+# 1. Extrair ticks do MT5 (requer terminal MT5 aberto)
 python baixa_dados.py
 
-# 2. Denoising multi-camada → dataset_clean.h5
+# 2. Denoising multi-camada
 python limpaArquivos.py
 
-# 3. Gerar alphas + normalização + labeling → dataset_final.h5
+# 3. Gerar alphas + normalização + labeling
 python calcula_alphas.py
 
-# 4. Treinar MoE + salvar checkpoints → results_inference.parquet
+# 4. Treinar MoE + salvar checkpoints + visualizar
 python moe_to_daily.py
-
-# 5. Visualização pós-treino → moe_analysis.html + moe_ghost_projection.html
-python moe_visualization.py
 ```
-
-### Cadeia de Arquivos (Data Lineage)
-
-| Estágio | Script | Output | Key HDF5 |
-|---|---|---|---|
-| 1 | `baixa_dados.py` | `dataset_raw.h5` | `tick_bars` |
-| 2 | `limpaArquivos.py` | `dataset_clean.h5` | `data` |
-| 3 | `calcula_alphas.py` | `dataset_final.h5` | `features` |
-| 4 | `moe_to_daily.py` | `results_inference.parquet` | — |
-| 5 | `moe_visualization.py` | `.html` (3 gráficos) | — |
 
 ### Inferência e Visualização (Standalone)
 
@@ -471,7 +440,7 @@ results = load_inference_results('results_inference.parquet')
 
 # Gerar análise visual
 import pandas as pd
-df_history = pd.read_hdf('dataset_final.h5', key='features')
+df_history = pd.read_hdf('dataset_features.h5', key='features')
 plot_moe_analysis(df_history, results, save_path='moe_analysis.html')
 ```
 
@@ -482,8 +451,7 @@ from moe_gating import MoEConfig
 
 config = MoEConfig(
     # Dados
-    input_file='dataset_final.h5',
-    input_key='features',
+    input_file='dataset_final_ia.h5',
     # Arquitetura
     window_size=60,          # Janela de observação (W)
     horizon=15,              # Passos futuros (H)
